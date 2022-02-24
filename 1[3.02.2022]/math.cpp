@@ -93,27 +93,32 @@ void Vector::print()
     return;
 }
 
-Vector Vector::operator+(Vector v)
+Vector Vector::operator +(Vector v)
 {
     return Vector(this->x + v.x, this->y + v.y, this->z + v.z);
 }
 
-Vector Vector::operator-(Vector v)
+Vector Vector::operator -(Vector v)
 {
     return Vector(this->x - v.x, this->y - v.y, this->z - v.z);
 }
 
-Vector Vector::operator*(double a)
+Vector Vector::operator *(double a)
 {
     return Vector(a * this->x, a * this->y, a * this->z);
 }
 
-double Vector::operator*(Vector v)
+Vector Math::operator *(double a, Vector v) // despite using "using" these "::" are needed for succesful compilation
+{
+    return Vector(a * v.x, a * v.y, a * v.z);
+}
+
+double Vector::operator *(Vector v)
 {
     return this->x * v.x + this->y * v.y + this->z * v.z;
 }
 
-Vector Vector::operator^(Vector v) // cross product
+Vector Vector::operator ^(Vector v) // cross product
 {
     Vector res;
     res.x = this->y * v.z - this->z * v.y;
@@ -124,7 +129,41 @@ Vector Vector::operator^(Vector v) // cross product
 
 Vector Vector::operator *(Matrix M)
 {
-    return Vector(*this * M.get_e1(), *this * M.get_e2(), *this * M.get_e3());
+    return Vector(*this * M.e1, *this * M.e2, *this * M.e3);
+}
+
+Vector Vector::operator ++()
+{
+    this->x++;
+    this->y++;
+    this->z++;
+    return *this;
+}
+
+Vector Vector::operator ++(int x)
+{
+    Vector v = *this;
+    this->x++;
+    this->y++;
+    this->z++;
+    return v;
+}
+
+Vector Vector::operator --()
+{
+    this->x--;
+    this->y--;
+    this->z--;
+    return *this;
+}
+
+Vector Vector::operator --(int x)
+{
+    Vector v = *this;
+    this->x--;
+    this->y--;
+    this->z--;
+    return v;
 }
 
 Matrix::Matrix(){}
@@ -181,27 +220,27 @@ void Matrix::set_e3(Vector e3)
 Matrix Matrix::transpose()
 {
     Matrix M = *this;
-    M.e1.set_y(this->e2.get_x());
-    M.e2.set_x(this->e1.get_y());
-    M.e1.set_z(this->e3.get_x());
-    M.e3.set_x(this->e1.get_z());
-    M.e2.set_z(this->e3.get_y());
-    M.e3.set_y(this->e2.get_z());
+    M.e1.y = (this->e2.x);
+    M.e2.x = (this->e1.y);
+    M.e1.z = (this->e3.x);
+    M.e3.x = (this->e1.z);
+    M.e2.z = (this->e3.y);
+    M.e3.y = (this->e2.z);
     return M;
 }
 
 double Matrix::det()
 {
     double a[9];
-    a[0] = this->e1.get_x();
-    a[1] = this->e2.get_x();
-    a[2] = this->e3.get_x();
-    a[3] = this->e1.get_y();
-    a[4] = this->e2.get_y();
-    a[5] = this->e3.get_y();
-    a[6] = this->e1.get_z();
-    a[7] = this->e2.get_z();
-    a[8] = this->e3.get_z();
+    a[0] = this->e1.x;
+    a[1] = this->e2.x;
+    a[2] = this->e3.x;
+    a[3] = this->e1.y;
+    a[4] = this->e2.y;
+    a[5] = this->e3.y;
+    a[6] = this->e1.z;
+    a[7] = this->e2.z;
+    a[8] = this->e3.z;
     double det = 0; 
     det += a[0] * a[4] * a[8];
     det += a[1] * a[5] * a[6];
@@ -212,28 +251,36 @@ double Matrix::det()
     return det;
 }
 
-Matrix Matrix::operator+(Matrix M)
+Matrix Matrix::operator +(Matrix M)
 {
     return Matrix(this->e1 + M.e1, this->e2 + M.e2, this->e3 + M.e3);
 }
 
-Matrix Matrix::operator-(Matrix M)
+Matrix Matrix::operator -(Matrix M)
 {
     return Matrix(this->e1 - M.e1, this->e2 - M.e2, this->e3 - M.e3);
 }
 
-Matrix Matrix::operator*(double a)
+Matrix Matrix::operator *(double a)
 {
     return Matrix(this->e1 * a, this->e2 * a, this->e3 * a);
 }
 
-Vector Matrix::operator*(Vector v)
+Matrix Math::operator *(double a, Matrix M)
+{
+    M.e1 = M.e1 * a;
+    M.e2 = M.e2 * a;
+    M.e3 = M.e3 * a;
+    return M;
+}
+
+Vector Matrix::operator *(Vector v)
 {
     Matrix M = this->transpose();
     return Vector(M.e1 * v, M.e2 * v, M.e3 * v); 
 }
 
-Matrix Matrix::operator*(Matrix M)
+Matrix Matrix::operator *(Matrix M)
 {
     Matrix N = this->transpose();
     Matrix Res;
@@ -252,4 +299,38 @@ void Matrix::print()
     printf("\n");
     M.e3.print();
     return;
+}
+
+Matrix Matrix::operator ++()
+{
+    this->e1.x++;
+    this->e2.y++;
+    this->e3.z++;
+    return *this;
+}
+
+Matrix Matrix::operator ++(int x)
+{
+    Matrix M = *this;
+    this->e1.x++;
+    this->e2.y++;
+    this->e3.z++;
+    return M;
+}
+
+Matrix Matrix::operator --()
+{
+    this->e1.x--;
+    this->e2.y--;
+    this->e3.z--;
+    return *this;
+}
+
+Matrix Matrix::operator --(int x)
+{
+    Matrix M = *this;
+    this->e1.x--;
+    this->e2.y--;
+    this->e3.z--;
+    return M;
 }

@@ -1,5 +1,6 @@
 namespace Math
 {
+    class Vector;
     class Matrix;
 
     class Vector
@@ -20,8 +21,8 @@ namespace Math
 
         double abs();
 
-        Vector plus(Vector add);
-        Vector minus(Vector sub);
+        Vector plus(Vector v);
+        Vector minus(Vector v);
         Vector mul(double);
         double dot_prod(Vector v);
         Vector cross_prod(Vector v);
@@ -30,12 +31,21 @@ namespace Math
 
         Vector operator +(Vector v);
         Vector operator -(Vector v);
-        Vector operator *(double a); 
+        Vector operator *(double a);
+        friend Vector operator *(double a, Vector v);
         double operator *(Vector v);
         Vector operator ^(Vector v); // cross product
-
         Vector operator *(Matrix M);
+
+        Vector operator ++();
+        Vector operator ++(int x);
+        Vector operator --();
+        Vector operator --(int x);
+
+        friend class Matrix;
     };
+
+    Vector operator *(double a, Vector v);
 
     class Matrix
     {
@@ -54,15 +64,25 @@ namespace Math
         void set_e2(Vector e2);
         void set_e3(Vector e3);
 
-        Matrix transpose();
-        double det();
+        Matrix transpose(); 
+        double det();       
 
-        Matrix operator +(Matrix m);
-        Matrix operator -(Matrix m);
+        Matrix operator +(Matrix M);
+        Matrix operator -(Matrix M);
         Matrix operator *(double a);
+        friend Matrix operator *(double a, Matrix M);
         Vector operator *(Vector v);
-        Matrix operator *(Matrix m);
+        Matrix operator *(Matrix M);
 
         void print();
+
+        Matrix operator ++();
+        Matrix operator ++(int x);
+        Matrix operator --();
+        Matrix operator --(int x);
+
+        friend class Vector;
     };
+
+    Matrix operator *(double a, Matrix M);
 }

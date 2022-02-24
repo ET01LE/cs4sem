@@ -13,8 +13,8 @@ int main()
     Vector e = a.mul(-1.0);
     Vector f = a.cross_prod(b);
 
-    std::cout << "a = " << a.get_x() << " " << a.get_y() << " " << a.get_z() << "\n"; // just testing iostream
-    std::cout << "b = " << b.get_x() << " " << b.get_y() << " " << b.get_z() << "\n";
+    std::cout << "a = " << a.get_x() << " " << a.get_y() << " " << a.get_z() << std::endl; // just testing iostream
+    std::cout << "b = " << b.get_x() << " " << b.get_y() << " " << b.get_z() << std::endl;
     printf("abs(a) = %.2f\n", a.abs());
     printf("a + b = c = ");     c.print();      printf("\n");
     printf("a - b = d = ");     d.print();      printf("\n");
@@ -49,7 +49,22 @@ int main()
     printf("N = 7M = \n");      N.print();      printf("\n");
     printf("Msqrd = M^2 = \n"); Msqrd.print();  printf("\n");
     printf("K = \n");           K.print();      printf("\n");
-    printf("det(K) = %.0f\n", K.det());    
+    printf("det(K) = %.0f\n\n", K.det());    
+
+    Vector h;
+    Vector g = h++;
+    h.print();                  printf("\n");     
+    g.print();                  printf("\n");
+    g = ++h;
+    h.print();                  printf("\n");     
+    g.print();                  printf("\n\n");
+    Matrix S;
+    Matrix T = S++;
+    S.print();                  printf("\n\n");     
+    T.print();                  printf("\n\n");
+    T = ++S;
+    S.print();                  printf("\n\n");     
+    T.print();                  printf("\n\n");
 
     return 0;
 }
